@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" data-i18n-content="games.meta.desc" content="Browse every arcade cabinet at Neon Arcade - filter by genre, players and decade, sort and save favourites.">
+  <title data-i18n="games.meta.title">Games | Neon Arcade</title>
+
+  <!-- Fonts (Google Fonts; the site still works offline, it just falls
+       back to the system fonts listed in css/base.css) -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5 (stored locally so the site works offline / from the zip) -->
+  <link href="vendor/bootstrap.min.css" rel="stylesheet">
+  <!-- Shared styles, loaded after Bootstrap so it can override it -->
+  <link href="css/base.css" rel="stylesheet">
+  <link href="css/games.css" rel="stylesheet">
+</head>
+<body class="arc-crt">
+
+  <a class="arc-skip-link" href="#main" data-i18n="common.skip">Skip to main content</a>
+
+  <!-- ============================================================
+       HEADER / NAVIGATION
+       IDENTICAL on every page except the arc-active / aria-current
+       marker on the current page's link. Any change here must be
+       made on ALL pages - talk to the shell owner (Member 1).
+       Text marked data-i18n is swapped by js/i18n.js.
+       ============================================================ -->
+  <header>
+    <nav class="navbar navbar-expand-lg sticky-top arc-navbar">
+      <div class="container">
+        <a class="navbar-brand arc-brand" href="index.html">
+          <span class="arc-brand-mark" aria-hidden="true">NA</span>
+          <span data-i18n="common.meta.siteName">Neon Arcade</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false"
+                aria-label="Toggle navigation" data-i18n-aria-label="common.nav.toggle">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNav">
+          <ul class="navbar-nav ms-auto arc-nav-list">
+            <li class="nav-item"><a class="nav-link arc-nav-link" data-page="index"   href="index.html"   data-i18n="common.nav.home">Home</a></li>
+            <li class="nav-item"><a class="nav-link arc-nav-link" data-page="games"   href="games.html"   data-i18n="common.nav.games">Games</a></li>
+            <li class="nav-item"><a class="nav-link arc-nav-link" data-page="events"  href="events.html"  data-i18n="common.nav.events">Events</a></li>
+            <li class="nav-item"><a class="nav-link arc-nav-link" data-page="booking" href="booking.html" data-i18n="common.nav.booking">Booking</a></li>
+            <li class="nav-item"><a class="nav-link arc-nav-link" data-page="about"   href="about.html"   data-i18n="common.nav.about">About</a></li>
+
+            <!-- Language selector, filled by js/i18n.js -->
+            <li class="nav-item arc-lang-item">
+              <label class="arc-sr-only" for="langSelect" data-i18n="common.nav.langLabel">Language</label>
+              <select id="langSelect" class="form-select form-select-sm arc-lang-select" aria-label="Language"></select>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" class="container arc-page">
+
+    <h1 class="arc-page-title" data-i18n="games.title">The cabinets</h1>
+    <p class="arc-lead" data-i18n="games.lead">Everything on the floor right now. Filter, sort, favourite - then book a session.</p>
+
+    <!-- ============================================================
+         FILTER BAR - owned by Member 2 (js/games.js)
+         ============================================================ -->
+    <div class="arc-filterbar">
+      <div class="row g-2 align-items-end">
+        <div class="col-md-4">
+          <label class="form-label" for="gamesSearch" data-i18n="games.filters.search">Search</label>
+          <input type="search" id="gamesSearch" class="form-control" data-i18n-placeholder="games.filters.searchPh" placeholder="Search cabinets...">
+        </div>
+        <div class="col-6 col-md-2">
+          <label class="form-label" for="genreFilter" data-i18n="games.filters.genre">Genre</label>
+          <select id="genreFilter" class="form-select"><option value="" data-i18n="games.filters.all">All</option></select>
+        </div>
+        <div class="col-6 col-md-2">
+          <label class="form-label" for="playersFilter" data-i18n="games.filters.players">Players</label>
+          <select id="playersFilter" class="form-select"><option value="" data-i18n="games.filters.all">All</option></select>
+        </div>
+        <div class="col-6 col-md-2">
+          <label class="form-label" for="decadeFilter" data-i18n="games.filters.decade">Decade</label>
+          <select id="decadeFilter" class="form-select"><option value="" data-i18n="games.filters.all">All</option></select>
+        </div>
+        <div class="col-6 col-md-2">
+          <label class="form-label" for="sortSelect" data-i18n="games.filters.sort">Sort</label>
+          <select id="sortSelect" class="form-select">
+            <option value="name" data-i18n="games.sort.name">Name A-Z</option>
+            <option value="newest" data-i18n="games.sort.newest">Newest</option>
+            <option value="cheapest" data-i18n="games.sort.cheapest">Cheapest</option>
+          </select>
+        </div>
+      </div>
+      <div class="arc-filterbar-row">
+        <button id="favToggle" class="arc-chip" type="button" aria-pressed="false" data-i18n="games.filters.favs">&#9829; Favourites only</button>
+        <button id="resetFilters" class="arc-chip" type="button" data-i18n="games.filters.reset">Reset</button>
+        <span id="resultsCount" class="arc-count"></span>
+      </div>
+    </div>
+
+    <!-- Card grid filled by js/games.js from js/data/games.js -->
+    <div id="gamesGrid" class="row g-4"></div>
+    <p id="noResults" class="arc-empty d-none" data-i18n="games.noResults">No cabinets match those filters.</p>
+
+    <!-- Details modal, opened by js/games.js -->
+    <div class="modal fade" id="gameModal" tabindex="-1" aria-labelledby="gameModalTitle" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content arc-modal">
+          <div class="modal-header">
+            <h2 class="modal-title h4" id="gameModalTitle"></h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria-label="games.modal.close"></button>
+          </div>
+          <div class="modal-body" id="gameModalBody"></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="arc-footer">
+    <div class="container">
+      <div class="row gy-4">
+        <div class="col-md-4">
+          <p class="arc-footer-brand">
+            <span class="arc-brand-mark" aria-hidden="true">NA</span>
+            <span data-i18n="common.meta.siteName">Neon Arcade</span>
+          </p>
+          <p class="arc-footer-tag" data-i18n="common.footer.tagline">Insert coin. Stay awhile.</p>
+        </div>
+        <div class="col-md-4">
+          <h2 class="arc-footer-h" data-i18n="common.footer.hoursTitle">Opening hours</h2>
+          <ul class="arc-hours-list" id="footerHours"><!-- filled by js/main.js --></ul>
+        </div>
+        <div class="col-md-4">
+          <h2 class="arc-footer-h" data-i18n="common.footer.contactTitle">Find us</h2>
+          <address class="arc-footer-addr" data-i18n="common.footer.address">12 Arcade Lane, Dublin 1</address>
+        </div>
+      </div>
+      <p class="arc-copy" data-i18n="common.footer.copyright">&copy; {year} Neon Arcade - student project, not a real arcade.</p>
+    </div>
+  </footer>
+
+  <script src="vendor/bootstrap.bundle.min.js"></script>
+  <script src="js/data/games.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/lang/common.js"></script>
+  <script src="js/lang/games.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/games.js"></script>
+</body>
+</html>

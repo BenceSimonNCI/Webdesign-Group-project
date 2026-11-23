@@ -1,0 +1,4 @@
+/* events.css - Events page specific styles
+   Owner: Member 3 (calendar states, tabs, event cards) */
+
+.arc-tabs { display: flex; gap: .6rem; flex-wrap: wrap; margin-bottom: 1.5rem; }

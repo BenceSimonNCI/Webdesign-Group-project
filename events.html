@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" data-i18n-content="events.meta.desc" content="Tournaments, retro nights and family sessions at Neon Arcade - interactive calendar and booking links.">
+  <title data-i18n="events.meta.title">Events | Neon Arcade</title>
+
+  <!-- Fonts (Google Fonts; the site still works offline, it just falls
+       back to the system fonts listed in css/base.css) -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5 (stored locally so the site works offline / from the zip) -->
+  <link href="vendor/bootstrap.min.css" rel="stylesheet">
+  <!-- Shared styles, loaded after Bootstrap so it can override it -->
+  <link href="css/base.css" rel="stylesheet">
+  <link href="css/events.css" rel="stylesheet">
+</head>
+<body class="arc-crt">
+
+  <a class="arc-skip-link" href="#main" data-i18n="common.skip">Skip to main content</a>
+
+  <!-- ============================================================
+       HEADER / NAVIGATION
+       IDENTICAL on every page except the arc-active / aria-current
+       marker on the current page's link. Any change here must be
+       made on ALL pages - talk to the shell owner (Member 1).
+       Text marked data-i18n is swapped by js/i18n.js.
+       ============================================================ -->
+  <header>
+    <nav class="navbar navbar-expand-lg sticky-top arc-navbar">
+      <div class="container">
+        <a class="navbar-brand arc-brand" href="index.html">
+          <span class="arc-brand-mark" aria-hidden="true">NA</span>
+          <span data-i18n="common.meta.siteName">Neon Arcade</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false"
+                aria-label="Toggle navigation" data-i18n-aria-label="common.nav.toggle">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNav">
+          <ul class="navbar-nav ms-auto arc-nav-list">
+            <li class="nav-item"><a class="nav-link arc-nav-link" data-page="index"   href="index.html"   data-i18n="common.nav.home">Home</a></li>
+            <li class="nav-item"><a class="nav-link arc-nav-link" data-page="games"   href="games.html"   data-i18n="common.nav.games">Games</a></li>
+            <li class="nav-item"><a class="nav-link arc-nav-link" data-page="events"  href="events.html"  data-i18n="common.nav.events">Events</a></li>
+            <li class="nav-item"><a class="nav-link arc-nav-link" data-page="booking" href="booking.html" data-i18n="common.nav.booking">Booking</a></li>
+            <li class="nav-item"><a class="nav-link arc-nav-link" data-page="about"   href="about.html"   data-i18n="common.nav.about">About</a></li>
+
+            <!-- Language selector, filled by js/i18n.js -->
+            <li class="nav-item arc-lang-item">
+              <label class="arc-sr-only" for="langSelect" data-i18n="common.nav.langLabel">Language</label>
+              <select id="langSelect" class="form-select form-select-sm arc-lang-select" aria-label="Language"></select>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" class="container arc-page">
+
+    <h1 class="arc-page-title" data-i18n="events.title">Events</h1>
+    <p class="arc-lead" data-i18n="events.lead">Tournaments, retro nights and family sessions. Pick a day on the calendar.</p>
+
+    <p class="arc-countdown" id="nextCountdown"></p>
+
+    <!-- Category filter tabs -->
+    <div class="arc-tabs" role="group" aria-label="Event categories">
+      <button class="arc-chip arc-chip-on" data-cat=""           type="button" data-i18n="events.cats.all">All</button>
+      <button class="arc-chip" data-cat="tournament"            type="button" data-i18n="events.cats.tournament">Tournament</button>
+      <button class="arc-chip" data-cat="retro"                 type="button" data-i18n="events.cats.retro">Retro night</button>
+      <button class="arc-chip" data-cat="family"                type="button" data-i18n="events.cats.family">Family</button>
+      <button class="arc-chip" data-cat="private"               type="button" data-i18n="events.cats.private">Private</button>
+    </div>
+
+    <div class="row g-4">
+      <!-- Calendar, built by js/events.js -->
+      <div class="col-lg-7">
+        <div class="arc-calendar">
+          <div class="arc-cal-head">
+            <button id="calPrev" class="arc-cal-nav" type="button" aria-label="Previous month" data-i18n-aria-label="events.cal.prev">&lt;</button>
+            <h2 id="calTitle" class="arc-cal-title h5 mb-0"></h2>
+            <button id="calNext" class="arc-cal-nav" type="button" aria-label="Next month" data-i18n-aria-label="events.cal.next">&gt;</button>
+          </div>
+          <div id="calWeekdays" class="arc-cal-weekdays"></div>
+          <div id="calGrid" class="arc-cal-grid"></div>
+        </div>
+      </div>
+      <!-- Events for the selected day -->
+      <div class="col-lg-5">
+        <h2 id="dayTitle" class="h5 arc-day-title"></h2>
+        <div id="dayEvents"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="arc-footer">
+    <div class="container">
+      <div class="row gy-4">
+        <div class="col-md-4">
+          <p class="arc-footer-brand">
+            <span class="arc-brand-mark" aria-hidden="true">NA</span>
+            <span data-i18n="common.meta.siteName">Neon Arcade</span>
+          </p>
+          <p class="arc-footer-tag" data-i18n="common.footer.tagline">Insert coin. Stay awhile.</p>
+        </div>
+        <div class="col-md-4">
+          <h2 class="arc-footer-h" data-i18n="common.footer.hoursTitle">Opening hours</h2>
+          <ul class="arc-hours-list" id="footerHours"><!-- filled by js/main.js --></ul>
+        </div>
+        <div class="col-md-4">
+          <h2 class="arc-footer-h" data-i18n="common.footer.contactTitle">Find us</h2>
+          <address class="arc-footer-addr" data-i18n="common.footer.address">12 Arcade Lane, Dublin 1</address>
+        </div>
+      </div>
+      <p class="arc-copy" data-i18n="common.footer.copyright">&copy; {year} Neon Arcade - student project, not a real arcade.</p>
+    </div>
+  </footer>
+
+  <script src="vendor/bootstrap.bundle.min.js"></script>
+  <script src="js/data/events.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/lang/common.js"></script>
+  <script src="js/lang/events.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/events.js"></script>
+</body>
+</html>

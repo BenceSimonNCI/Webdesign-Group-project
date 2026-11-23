@@ -1,0 +1,4 @@
+/* home.css - Home page specific styles
+   Owner: Member 1 */
+
+.arc-event-feature { border-color: var(--arc-neon-2); box-shadow: 0 0 24px rgba(255, 46, 136, .15); }

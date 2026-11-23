@@ -1,0 +1,4 @@
+/* booking.css - Booking page specific styles
+   Owner: Member 4 (form layout, error/valid states, summary) */
+
+.arc-summary { position: sticky; top: 6rem; }

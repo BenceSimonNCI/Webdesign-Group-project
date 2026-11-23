@@ -1,0 +1,12 @@
+/* games.css - Games page specific styles
+   Owner: Member 2 (filter bar, cards, chips, modal) */
+
+.arc-filterbar {
+  background: var(--arc-surface);
+  border: 1px solid var(--arc-line);
+  border-radius: var(--arc-radius);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.arc-filterbar-row { display: flex; align-items: center; gap: .6rem; margin-top: .8rem; flex-wrap: wrap; }
+.arc-count { color: var(--arc-muted); font-size: .85rem; margin-left: auto; }

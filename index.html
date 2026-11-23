@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" data-i18n-content="home.meta.desc" content="Neon Arcade - classic and modern arcade cabinets, tournaments and party bookings in Dublin.">
+  <title data-i18n="home.meta.title">Neon Arcade | Dublin's retro arcade</title>
+
+  <!-- Fonts (Google Fonts; the site still works offline, it just falls
+       back to the system fonts listed in css/base.css) -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5 (stored locally so the site works offline / from the zip) -->
+  <link href="vendor/bootstrap.min.css" rel="stylesheet">
+  <!-- Shared styles, loaded after Bootstrap so it can override it -->
+  <link href="css/base.css" rel="stylesheet">
+  <link href="css/home.css" rel="stylesheet">
+</head>
+<body class="arc-crt">
+
+  <a class="arc-skip-link" href="#main" data-i18n="common.skip">Skip to main content</a>
+
+  <!-- ============================================================
+       HEADER / NAVIGATION
+       IDENTICAL on every page except the arc-active / aria-current
+       marker on the current page's link. Any change here must be
+       made on ALL pages - talk to the shell owner (Member 1).
+       Text marked data-i18n is swapped by js/i18n.js.
+       ============================================================ -->
+  <header>
+    <nav class="navbar navbar-expand-lg sticky-top arc-navbar">
+      <div class="container">
+        <a class="navbar-brand arc-brand" href="index.html">
+          <span class="arc-brand-mark" aria-hidden="true">NA</span>
+          <span data-i18n="common.meta.siteName">Neon Arcade</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false"
+                aria-label="Toggle navigation" data-i18n-aria-label="common.nav.toggle">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNav">
+          <ul class="navbar-nav ms-auto arc-nav-list">
+            <li class="nav-item"><a class="nav-link arc-nav-link" data-page="index"   href="index.html"   data-i18n="common.nav.home">Home</a></li>
+            <li class="nav-item"><a class="nav-link arc-nav-link" data-page="games"   href="games.html"   data-i18n="common.nav.games">Games</a></li>
+            <li class="nav-item"><a class="nav-link arc-nav-link" data-page="events"  href="events.html"  data-i18n="common.nav.events">Events</a></li>
+            <li class="nav-item"><a class="nav-link arc-nav-link" data-page="booking" href="booking.html" data-i18n="common.nav.booking">Booking</a></li>
+            <li class="nav-item"><a class="nav-link arc-nav-link" data-page="about"   href="about.html"   data-i18n="common.nav.about">About</a></li>
+
+            <!-- Language selector, filled by js/i18n.js -->
+            <li class="nav-item arc-lang-item">
+              <label class="arc-sr-only" for="langSelect" data-i18n="common.nav.langLabel">Language</label>
+              <select id="langSelect" class="form-select form-select-sm arc-lang-select" aria-label="Language"></select>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+
+    <!-- HERO -->
+    <section class="arc-hero">
+      <div class="container text-center">
+        <p class="arc-hero-kicker" data-i18n="home.hero.kicker">Est. 2026 - Dublin</p>
+        <h1 class="arc-hero-title" data-i18n="home.hero.title">NEON ARCADE</h1>
+        <p class="arc-hero-tag" data-i18n="home.hero.tagline">Classic cabinets. Cold drinks. High scores.</p>
+        <p><span id="openStatus" class="arc-badge arc-badge-open">...</span></p>
+        <div class="arc-hero-cta">
+          <a class="arc-btn arc-btn-neon"  href="games.html"   data-i18n="home.hero.ctaGames">Browse the cabinets</a>
+          <a class="arc-btn arc-btn-ghost" href="booking.html" data-i18n="home.hero.ctaBook">Book a session</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED GAMES - filled by js/home.js from js/data/games.js -->
+    <section class="arc-section">
+      <div class="container">
+        <h2 class="arc-section-title" data-i18n="home.featured.title">Featured cabinets</h2>
+        <div id="featuredGames" class="row g-4"></div>
+        <p class="text-center mt-4">
+          <a href="games.html" class="arc-link" data-i18n="home.featured.more">See all machines &rarr;</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- NEXT EVENT - filled by js/home.js from js/data/events.js -->
+    <section class="arc-section arc-section-alt">
+      <div class="container">
+        <h2 class="arc-section-title" data-i18n="home.nextEvent.title">Next event</h2>
+        <div id="nextEvent" class="row justify-content-center"></div>
+        <p class="text-center mt-4">
+          <a href="events.html" class="arc-link" data-i18n="home.nextEvent.more">Full events calendar &rarr;</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- OPENING HOURS - filled by js/main.js -->
+    <section class="arc-section">
+      <div class="container">
+        <h2 class="arc-section-title" data-i18n="home.hours.title">Opening hours</h2>
+        <div class="arc-hours-card mx-auto">
+          <ul class="arc-hours-list" id="homeHours"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT TEASER -->
+    <section class="arc-section arc-section-alt">
+      <div class="container text-center">
+        <h2 class="arc-section-title" data-i18n="home.about.title">A proper old-school arcade</h2>
+        <p class="arc-lead mx-auto" data-i18n="home.about.text">
+          Twenty-odd cabinets from the 80s to today, a snack bar, and a leaderboard wall of fame.
+        </p>
+        <a class="arc-btn arc-btn-ghost" href="about.html" data-i18n="home.about.cta">More about us</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="arc-footer">
+    <div class="container">
+      <div class="row gy-4">
+        <div class="col-md-4">
+          <p class="arc-footer-brand">
+            <span class="arc-brand-mark" aria-hidden="true">NA</span>
+            <span data-i18n="common.meta.siteName">Neon Arcade</span>
+          </p>
+          <p class="arc-footer-tag" data-i18n="common.footer.tagline">Insert coin. Stay awhile.</p>
+        </div>
+        <div class="col-md-4">
+          <h2 class="arc-footer-h" data-i18n="common.footer.hoursTitle">Opening hours</h2>
+          <ul class="arc-hours-list" id="footerHours"><!-- filled by js/main.js --></ul>
+        </div>
+        <div class="col-md-4">
+          <h2 class="arc-footer-h" data-i18n="common.footer.contactTitle">Find us</h2>
+          <address class="arc-footer-addr" data-i18n="common.footer.address">12 Arcade Lane, Dublin 1</address>
+        </div>
+      </div>
+      <p class="arc-copy" data-i18n="common.footer.copyright">&copy; {year} Neon Arcade - student project, not a real arcade.</p>
+    </div>
+  </footer>
+
+  <script src="vendor/bootstrap.bundle.min.js"></script>
+  <script src="js/data/games.js"></script>
+  <script src="js/data/events.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/lang/common.js"></script>
+  <script src="js/lang/home.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

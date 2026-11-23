@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" data-i18n-content="about.meta.desc" content="The story, prices, house rules and FAQs of Neon Arcade, Dublin's retro arcade.">
+  <title data-i18n="about.meta.title">About | Neon Arcade</title>
+
+  <!-- Fonts (Google Fonts; the site still works offline, it just falls
+       back to the system fonts listed in css/base.css) -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5 (stored locally so the site works offline / from the zip) -->
+  <link href="vendor/bootstrap.min.css" rel="stylesheet">
+  <!-- Shared styles, loaded after Bootstrap so it can override it -->
+  <link href="css/base.css" rel="stylesheet">
+  <link href="css/about.css" rel="stylesheet">
+</head>
+<body class="arc-crt">
+
+  <a class="arc-skip-link" href="#main" data-i18n="common.skip">Skip to main content</a>
+
+  <!-- ============================================================
+       HEADER / NAVIGATION
+       IDENTICAL on every page except the arc-active / aria-current
+       marker on the current page's link. Any change here must be
+       made on ALL pages - talk to the shell owner (Member 1).
+       Text marked data-i18n is swapped by js/i18n.js.
+       ============================================================ -->
+  <header>
+    <nav class="navbar navbar-expand-lg sticky-top arc-navbar">
+      <div class="container">
+        <a class="navbar-brand arc-brand" href="index.html">
+          <span class="arc-brand-mark" aria-hidden="true">NA</span>
+          <span data-i18n="common.meta.siteName">Neon Arcade</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false"
+                aria-label="Toggle navigation" data-i18n-aria-label="common.nav.toggle">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNav">
+          <ul class="navbar-nav ms-auto arc-nav-list">
+            <li class="nav-item"><a class="nav-link arc-nav-link" data-page="index"   href="index.html"   data-i18n="common.nav.home">Home</a></li>
+            <li class="nav-item"><a class="nav-link arc-nav-link" data-page="games"   href="games.html"   data-i18n="common.nav.games">Games</a></li>
+            <li class="nav-item"><a class="nav-link arc-nav-link" data-page="events"  href="events.html"  data-i18n="common.nav.events">Events</a></li>
+            <li class="nav-item"><a class="nav-link arc-nav-link" data-page="booking" href="booking.html" data-i18n="common.nav.booking">Booking</a></li>
+            <li class="nav-item"><a class="nav-link arc-nav-link" data-page="about"   href="about.html"   data-i18n="common.nav.about">About</a></li>
+
+            <!-- Language selector, filled by js/i18n.js -->
+            <li class="nav-item arc-lang-item">
+              <label class="arc-sr-only" for="langSelect" data-i18n="common.nav.langLabel">Language</label>
+              <select id="langSelect" class="form-select form-select-sm arc-lang-select" aria-label="Language"></select>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" class="container arc-page">
+
+    <h1 class="arc-page-title" data-i18n="about.title">About the arcade</h1>
+
+    <section class="arc-section-sm">
+      <h2 class="arc-section-title" data-i18n="about.story.h">Our story</h2>
+      <p class="arc-lead" data-i18n="about.story.p1">Neon Arcade started with three rescued cabinets in a storage unit and a stubborn belief that games are better shared.</p>
+      <p data-i18n="about.story.p2">Today we run a floor of restored classics alongside modern indie machines, host weekly tournaments and keep the change machine well fed.</p>
+    </section>
+
+    <section class="arc-section-sm">
+      <h2 class="arc-section-title" data-i18n="about.prices.h">Prices</h2>
+      <div class="row g-4">
+        <div class="col-md-4"><div class="arc-card arc-card-pad h-100">
+          <h3 class="arc-card-title" data-i18n="about.prices.casual.h">Casual play</h3>
+          <p class="arc-price">&euro;1<span class="arc-price-unit" data-i18n="about.prices.casual.unit">/play</span></p>
+          <p data-i18n="about.prices.casual.p">Pay per game on any standard cabinet.</p>
+        </div></div>
+        <div class="col-md-4"><div class="arc-card arc-card-pad h-100">
+          <h3 class="arc-card-title" data-i18n="about.prices.wrist.h">All-night wristband</h3>
+          <p class="arc-price">&euro;15<span class="arc-price-unit" data-i18n="about.prices.wrist.unit">/person</span></p>
+          <p data-i18n="about.prices.wrist.p">Unlimited standard play for the whole session.</p>
+        </div></div>
+        <div class="col-md-4"><div class="arc-card arc-card-pad h-100">
+          <h3 class="arc-card-title" data-i18n="about.prices.party.h">Party booking</h3>
+          <p class="arc-price">&euro;120<span class="arc-price-unit" data-i18n="about.prices.party.unit">/group</span></p>
+          <p data-i18n="about.prices.party.p">Two hours, reserved zone, token bundle included.</p>
+        </div></div>
+      </div>
+    </section>
+
+    <section class="arc-section-sm">
+      <h2 class="arc-section-title" data-i18n="about.rules.h">House rules</h2>
+      <ul class="arc-rules">
+        <li data-i18n="about.rules.r1">No drinks on the machines - bottle holders are on the side of every cab.</li>
+        <li data-i18n="about.rules.r2">Winner stays on, but respect the queue card on popular cabs.</li>
+        <li data-i18n="about.rules.r3">Under-14s welcome with an adult until 8pm.</li>
+        <li data-i18n="about.rules.r4">Be kind to the machines. They are older than you.</li>
+      </ul>
+    </section>
+
+    <section class="arc-section-sm">
+      <h2 class="arc-section-title" data-i18n="about.faq.h">FAQ</h2>
+      <div class="accordion arc-accordion" id="faqAccordion">
+        <div class="accordion-item">
+          <h3 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="true" aria-controls="faq1" data-i18n="about.faq.q1">Do I need to book?</button>
+          </h3>
+          <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+            <div class="accordion-body" data-i18n="about.faq.a1">Walk-ins are always welcome. Bookings are only needed for parties and private hire.</div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h3 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2" data-i18n="about.faq.q2">Are the machines really original?</button>
+          </h3>
+          <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+            <div class="accordion-body" data-i18n="about.faq.a2">Most of our classics run original boards in restored cabinets; a few run faithful emulation for reliability.</div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h3 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3" data-i18n="about.faq.q3">Can I bring my own controller?</button>
+          </h3>
+          <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+            <div class="accordion-body" data-i18n="about.faq.a3">Fight sticks are welcome on tournament nights - ask staff to plug you in.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="arc-section-sm">
+      <h2 class="arc-section-title" data-i18n="about.find.h">Find us</h2>
+      <!-- TODO (Member 1): swap in a real embedded map or photo -->
+      <div class="arc-map-placeholder" data-i18n="about.find.map">[Map placeholder - 12 Arcade Lane, Dublin 1]</div>
+    </section>
+
+  </main>
+
+  <footer class="arc-footer">
+    <div class="container">
+      <div class="row gy-4">
+        <div class="col-md-4">
+          <p class="arc-footer-brand">
+            <span class="arc-brand-mark" aria-hidden="true">NA</span>
+            <span data-i18n="common.meta.siteName">Neon Arcade</span>
+          </p>
+          <p class="arc-footer-tag" data-i18n="common.footer.tagline">Insert coin. Stay awhile.</p>
+        </div>
+        <div class="col-md-4">
+          <h2 class="arc-footer-h" data-i18n="common.footer.hoursTitle">Opening hours</h2>
+          <ul class="arc-hours-list" id="footerHours"><!-- filled by js/main.js --></ul>
+        </div>
+        <div class="col-md-4">
+          <h2 class="arc-footer-h" data-i18n="common.footer.contactTitle">Find us</h2>
+          <address class="arc-footer-addr" data-i18n="common.footer.address">12 Arcade Lane, Dublin 1</address>
+        </div>
+      </div>
+      <p class="arc-copy" data-i18n="common.footer.copyright">&copy; {year} Neon Arcade - student project, not a real arcade.</p>
+    </div>
+  </footer>
+
+  <script src="vendor/bootstrap.bundle.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/lang/common.js"></script>
+  <script src="js/lang/home.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/about.js"></script>
+</body>
+</html>

@@ -1,0 +1,329 @@
+/* =============================================================
+   base.css - shared styles, visual identity, Bootstrap overrides
+   Owner: Member 1 (site shell)
+
+   Rules of the house:
+   * All colours come from the variables below. Never hard-code
+     a colour - change the variable and the whole site follows.
+   * Prefix our own classes with arc- so they never collide
+     with Bootstrap or a teammate's file.
+   * No inline styles anywhere (brief requirement).
+   ============================================================= */
+
+:root {
+  /* Retro neon palette (agreed team style) */
+  --arc-bg:        #0b0614;
+  --arc-bg-2:      #140a26;
+  --arc-surface:   #1c1033;
+  --arc-surface-2: #241344;
+  --arc-line:      #3d2667;
+
+  --arc-text:      #ece9f7;
+  --arc-muted:     #a79ecb;
+
+  --arc-neon:      #00f0ff;   /* cyan */
+  --arc-neon-2:    #ff2e88;   /* magenta */
+  --arc-neon-3:    #ffd300;   /* amber */
+  --arc-good:      #2effa1;
+  --arc-bad:       #ff5470;
+
+  --arc-font-display: 'Press Start 2P', 'Courier New', monospace;
+  --arc-font-body:    'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --arc-radius: 14px;
+}
+
+/* ---------- Base ---------- */
+html { scroll-behavior: smooth; }
+body {
+  background:
+    radial-gradient(1200px 500px at 50% -10%, var(--arc-bg-2), transparent 70%),
+    var(--arc-bg);
+  color: var(--arc-text);
+  font-family: var(--arc-font-body);
+}
+h1, h2, h3 { color: var(--arc-text); }
+a { color: var(--arc-neon); }
+a:hover { color: var(--arc-neon-2); }
+
+.arc-sr-only {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+.arc-skip-link {
+  position: absolute; left: 1rem; top: -4rem; z-index: 2000;
+  background: var(--arc-neon); color: #06121a; font-weight: 700;
+  padding: .5rem 1rem; border-radius: 0 0 .5rem .5rem;
+  transition: top .2s;
+}
+.arc-skip-link:focus { top: 0; color: #06121a; }
+
+:focus-visible {
+  outline: 3px solid var(--arc-neon-3);
+  outline-offset: 2px;
+}
+
+/* ---------- CRT overlay (retro filter)
+   Pure CSS scanlines + vignette. On by default via
+   <body class="arc-crt"> - remove the class to switch off
+   (or wire it to a theme toggle later). ---------- */
+.arc-crt::after {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 2000;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, .14) 0 1px,
+      transparent 1px 3px
+    ),
+    radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(0, 0, 0, .35) 100%);
+  opacity: .55;
+}
+
+/* ---------- Navbar ---------- */
+.arc-navbar {
+  background: rgba(11, 6, 20, .92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--arc-line);
+}
+.arc-brand {
+  font-family: var(--arc-font-display);
+  font-size: .95rem;
+  color: var(--arc-text) !important;
+  display: inline-flex; align-items: center; gap: .6rem;
+  text-shadow: 0 0 12px rgba(0, 240, 255, .55);
+}
+.arc-brand-mark {
+  display: inline-grid; place-items: center;
+  width: 2rem; height: 2rem;
+  font-family: var(--arc-font-display); font-size: .7rem;
+  color: #06121a;
+  background: linear-gradient(135deg, var(--arc-neon), var(--arc-neon-2));
+  border-radius: 6px;
+}
+.arc-nav-link {
+  color: var(--arc-muted) !important;
+  font-weight: 600;
+  border-radius: .5rem;
+  margin-inline: .15rem;
+  padding-inline: .8rem !important;
+}
+.arc-nav-link:hover { color: var(--arc-neon) !important; }
+.arc-nav-link.arc-active {
+  color: var(--arc-neon) !important;
+  box-shadow: inset 0 -2px 0 var(--arc-neon);
+}
+.arc-lang-item { display: flex; align-items: center; }
+.arc-lang-select {
+  background-color: var(--arc-surface);
+  border-color: var(--arc-line);
+  color: var(--arc-text);
+  margin-left: .5rem;
+  width: auto;
+}
+
+/* ---------- Buttons / links ---------- */
+.arc-btn {
+  display: inline-block;
+  font-weight: 700; text-decoration: none;
+  padding: .65rem 1.4rem; border-radius: 10px;
+  border: 2px solid transparent;
+  transition: transform .12s, box-shadow .12s;
+}
+.arc-btn-neon {
+  background: var(--arc-neon); color: #06121a;
+  box-shadow: 0 0 18px rgba(0, 240, 255, .35);
+}
+.arc-btn-neon:hover { transform: translateY(-2px); box-shadow: 0 0 26px rgba(0, 240, 255, .6); color: #06121a; }
+.arc-btn-ghost {
+  border-color: var(--arc-neon-2); color: var(--arc-neon-2);
+  box-shadow: 0 0 14px rgba(255, 46, 136, .25);
+}
+.arc-btn-ghost:hover { background: var(--arc-neon-2); color: #1a0413; }
+.arc-link { font-weight: 700; }
+
+/* ---------- Page scaffolding ---------- */
+.arc-page { padding-block: 3rem 4rem; }
+.arc-page-title {
+  font-family: var(--arc-font-display);
+  font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+  color: var(--arc-neon);
+  text-shadow: 0 0 16px rgba(0, 240, 255, .45);
+  margin-bottom: 1rem;
+}
+.arc-section { padding-block: 3.2rem; }
+.arc-section-alt { background: var(--arc-bg-2); }
+.arc-section-sm { margin-bottom: 3rem; }
+.arc-section-title {
+  font-family: var(--arc-font-display);
+  font-size: clamp(1rem, 2.4vw, 1.4rem);
+  color: var(--arc-text);
+  margin-bottom: 1.6rem;
+}
+.arc-lead { font-size: 1.1rem; color: var(--arc-muted); max-width: 60ch; }
+.arc-muted { color: var(--arc-muted); }
+.arc-empty { text-align: center; color: var(--arc-muted); padding: 3rem 0; }
+
+/* ---------- Hero ---------- */
+.arc-hero {
+  padding-block: clamp(4rem, 10vw, 7rem);
+  background:
+    radial-gradient(600px 300px at 50% 20%, rgba(255, 46, 136, .12), transparent 70%),
+    radial-gradient(800px 400px at 80% 100%, rgba(0, 240, 255, .08), transparent 70%);
+}
+.arc-hero-kicker { letter-spacing: .25em; text-transform: uppercase; color: var(--arc-muted); font-size: .8rem; }
+.arc-hero-title {
+  font-family: var(--arc-font-display);
+  font-size: clamp(1.8rem, 6vw, 3.6rem);
+  color: var(--arc-neon-2);
+  text-shadow:
+    0 0 10px rgba(255, 46, 136, .8),
+    0 0 34px rgba(255, 46, 136, .4),
+    4px 4px 0 rgba(0, 240, 255, .35);
+  margin: .6rem 0 1rem;
+}
+.arc-hero-tag { color: var(--arc-muted); font-size: 1.15rem; }
+.arc-hero-cta { display: flex; gap: .8rem; justify-content: center; flex-wrap: wrap; margin-top: 1.4rem; }
+
+/* ---------- Cards ---------- */
+.arc-card {
+  background: var(--arc-surface);
+  border: 1px solid var(--arc-line);
+  border-radius: var(--arc-radius);
+  overflow: hidden;
+  transition: transform .15s, border-color .15s, box-shadow .15s;
+}
+.arc-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--arc-neon);
+  box-shadow: 0 0 22px rgba(0, 240, 255, .18);
+}
+.arc-card-pad { padding: 1.25rem; }
+.arc-card-img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; background: var(--arc-surface-2); }
+.arc-card-title { font-weight: 800; font-size: 1.05rem; margin-bottom: .35rem; }
+.arc-card-meta { color: var(--arc-muted); font-size: .9rem; margin: 0; }
+.arc-price { font-family: var(--arc-font-display); color: var(--arc-neon-3); font-size: 1.3rem; margin: .4rem 0; }
+.arc-price-unit { font-family: var(--arc-font-body); font-size: .8rem; color: var(--arc-muted); }
+
+/* ---------- Badges / chips ---------- */
+.arc-badge {
+  display: inline-block; padding: .35rem .9rem; border-radius: 999px;
+  font-weight: 700; font-size: .85rem;
+  border: 1px solid var(--arc-line);
+}
+.arc-badge-open   { color: var(--arc-good); border-color: var(--arc-good); box-shadow: 0 0 12px rgba(46, 255, 161, .25); }
+.arc-badge-closed { color: var(--arc-bad);  border-color: var(--arc-bad); }
+
+.arc-chip {
+  background: var(--arc-surface); color: var(--arc-muted);
+  border: 1px solid var(--arc-line); border-radius: 999px;
+  padding: .35rem 1rem; font-weight: 600; font-size: .85rem;
+}
+.arc-chip:hover { color: var(--arc-neon); border-color: var(--arc-neon); }
+.arc-chip-on, .arc-chip[aria-pressed="true"] {
+  color: #06121a; background: var(--arc-neon); border-color: var(--arc-neon);
+}
+
+/* ---------- Hours ---------- */
+.arc-hours-list { list-style: none; padding: 0; margin: 0; }
+.arc-hours-list li {
+  display: flex; justify-content: space-between;
+  padding: .35rem 0; border-bottom: 1px dashed var(--arc-line);
+  color: var(--arc-muted); font-size: .95rem;
+}
+.arc-hours-card {
+  max-width: 420px;
+  background: var(--arc-surface); border: 1px solid var(--arc-line);
+  border-radius: var(--arc-radius); padding: 1.25rem 1.5rem;
+}
+
+/* ---------- Footer ---------- */
+.arc-footer {
+  border-top: 1px solid var(--arc-line);
+  background: var(--arc-bg-2);
+  padding-block: 2.5rem 1.5rem;
+  margin-top: 2rem;
+}
+.arc-footer-brand {
+  font-family: var(--arc-font-display); font-size: .9rem;
+  display: flex; align-items: center; gap: .6rem; margin-bottom: .5rem;
+}
+.arc-footer-tag { color: var(--arc-muted); }
+.arc-footer-h { font-size: 1rem; font-weight: 800; color: var(--arc-text); margin-bottom: .6rem; }
+.arc-footer-addr { color: var(--arc-muted); font-style: normal; }
+.arc-copy { text-align: center; color: var(--arc-muted); font-size: .85rem; margin-top: 2rem; }
+
+/* ---------- Forms ---------- */
+.arc-form .form-control, .arc-form .form-select, .arc-filterbar .form-control, .arc-filterbar .form-select {
+  background-color: var(--arc-surface);
+  border: 1px solid var(--arc-line);
+  color: var(--arc-text);
+}
+.arc-form .form-control:focus, .arc-form .form-select:focus {
+  background-color: var(--arc-surface-2); color: var(--arc-text);
+  border-color: var(--arc-neon);
+  box-shadow: 0 0 0 .2rem rgba(0, 240, 255, .15);
+}
+.arc-req { color: var(--arc-neon-2); }
+.arc-error-text { color: var(--arc-bad); font-size: .85rem; min-height: 1.2em; margin: .25rem 0 0; }
+.arc-field-error { border-color: var(--arc-bad) !important; }
+.arc-field-valid { border-color: var(--arc-good) !important; }
+
+/* ---------- Calendar (base; Member 3 styles more in events.css) ---------- */
+.arc-calendar {
+  background: var(--arc-surface); border: 1px solid var(--arc-line);
+  border-radius: var(--arc-radius); padding: 1rem;
+}
+.arc-cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: .8rem; }
+.arc-cal-title { font-weight: 800; }
+.arc-cal-nav {
+  background: var(--arc-surface-2); color: var(--arc-neon);
+  border: 1px solid var(--arc-line); border-radius: 8px;
+  width: 2.2rem; height: 2.2rem; font-weight: 800;
+}
+.arc-cal-nav:hover { border-color: var(--arc-neon); }
+.arc-cal-weekdays, .arc-cal-grid {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: .3rem;
+}
+.arc-cal-weekdays { color: var(--arc-muted); font-size: .75rem; text-transform: uppercase; text-align: center; margin-bottom: .3rem; }
+.arc-cal-day {
+  aspect-ratio: 1; display: grid; place-items: center;
+  border-radius: 8px; border: 1px solid transparent;
+  background: transparent; color: var(--arc-text); font-size: .9rem;
+  position: relative;
+}
+.arc-cal-day:hover { border-color: var(--arc-neon); }
+.arc-cal-day.arc-cal-other { color: var(--arc-line); }
+.arc-cal-day.arc-cal-today { border-color: var(--arc-neon-3); color: var(--arc-neon-3); }
+.arc-cal-day.arc-cal-selected { background: var(--arc-neon); color: #06121a; font-weight: 800; }
+.arc-cal-day.arc-cal-has::after {
+  content: ''; position: absolute; bottom: .25rem;
+  width: .35rem; height: .35rem; border-radius: 50%;
+  background: var(--arc-neon-2);
+}
+
+/* ---------- Modal ---------- */
+.arc-modal { background: var(--arc-surface); border: 1px solid var(--arc-line); }
+
+/* ---------- Accordion (Bootstrap themed) ---------- */
+.arc-accordion .accordion-item { background: var(--arc-surface); border-color: var(--arc-line); }
+.arc-accordion .accordion-button { background: var(--arc-surface-2); color: var(--arc-text); font-weight: 700; }
+.arc-accordion .accordion-button:not(.collapsed) { background: var(--arc-surface-2); color: var(--arc-neon); box-shadow: none; }
+.arc-accordion .accordion-button:focus { box-shadow: 0 0 0 .2rem rgba(0, 240, 255, .15); }
+.arc-accordion .accordion-body { color: var(--arc-muted); }
+
+/* ---------- Misc ---------- */
+.arc-map-placeholder {
+  border: 2px dashed var(--arc-line); border-radius: var(--arc-radius);
+  padding: 3rem; text-align: center; color: var(--arc-muted);
+}
+.arc-rules li { margin-bottom: .4rem; color: var(--arc-muted); }
+.arc-countdown { color: var(--arc-neon-3); font-weight: 700; }
+.arc-day-title { color: var(--arc-neon); }
+
+@media (max-width: 576px) {
+  .arc-cal-weekdays, .arc-cal-grid { gap: .15rem; }
+  .arc-cal-day { font-size: .8rem; }
+}
