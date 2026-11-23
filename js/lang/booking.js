@@ -1,12 +1,17 @@
 /* =============================================================
-   js/lang/booking.js - translations for namespace(s): booking
-   One file per page owner = no merge conflicts.
-   Write English first; other languages can be filled in later -
-   anything missing falls back to English automatically.
-   meta.langName must exist for EVERY language in common.
+   js/lang/booking.js - the text for the Booking page, in every language
+   Owner: Member 4
+
+   HOW TO USE
+   * Each key here matches a data-i18n="..." in the HTML.
+     Example: data-i18n="booking.title" -> the "title" line below.
+   * Write the English (en) version first. Other languages can be
+     added later - anything missing simply shows in English.
+   * Only edit YOUR file, so we never clash in git.
+   * Text containing an apostrophe: use "double quotes" around it,
+     e.g. title: "Dublin's arcade"
    ============================================================= */
 
-/* Owner: Member 4 (Booking page) */
 ARC_I18N.addTranslations('booking', {
   en: {
     meta: { title: 'Book a session | Neon Arcade',
@@ -17,9 +22,9 @@ ARC_I18N.addTranslations('booking', {
          date: 'Date', time: 'Time slot', timePh: 'Choose...', guests: 'Guests',
          game: 'Favourite cabinet (optional)', msg: 'Anything else?',
          terms: 'I accept the house rules', submit: 'Send booking', clear: 'Clear' },
-    pkg: { casual: 'Casual play (\u20ac1/play)', wrist: 'All-night wristband (\u20ac15/person)',
-           party: 'Party zone (\u20ac120/10 guests)', tourn: 'Tournament entry (\u20ac10/person)',
-           priv: 'Private hire (\u20ac300)' },
+    pkg: { casual: 'Casual play (€1/play)', wrist: 'All-night wristband (€15/person)',
+           party: 'Party zone (€120/10 guests)', tourn: 'Tournament entry (€10/person)',
+           priv: 'Private hire (€300)' },
     sum: { h: 'Estimated price', note: 'Pick a package to see the estimate.' }
     /* err.<field>: inline error messages go here */
   }

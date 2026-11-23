@@ -1,15 +1,20 @@
 /* =============================================================
-   js/lang/home.js - translations for namespace(s): home, about
-   One file per page owner = no merge conflicts.
-   Write English first; other languages can be filled in later -
-   anything missing falls back to English automatically.
-   meta.langName must exist for EVERY language in common.
+   js/lang/home.js - the text for the Home and About pages, in every language
+   Owner: Member 1
+
+   HOW TO USE
+   * Each key here matches a data-i18n="..." in the HTML.
+     Example: data-i18n="home.title" -> the "title" line below.
+   * Write the English (en) version first. Other languages can be
+     added later - anything missing simply shows in English.
+   * Only edit YOUR file, so we never clash in git.
+   * Text containing an apostrophe: use "double quotes" around it,
+     e.g. title: "Dublin's arcade"
    ============================================================= */
 
-/* Owner: Member 1 (Home + About + shell) */
 ARC_I18N.addTranslations('home', {
   en: {
-    meta: { title: 'Neon Arcade | Dublin\'s retro arcade',
+    meta: { title: "Neon Arcade | Dublin's retro arcade",
             desc: 'Neon Arcade - classic and modern arcade cabinets, tournaments and party bookings in Dublin.' },
     hero: {
       kicker: 'Est. 2026 - Dublin',
@@ -18,8 +23,8 @@ ARC_I18N.addTranslations('home', {
       ctaGames: 'Browse the cabinets',
       ctaBook: 'Book a session'
     },
-    featured: { title: 'Featured cabinets', more: 'See all machines \u2192' },
-    nextEvent: { title: 'Next event', more: 'Full events calendar \u2192' },
+    featured: { title: 'Featured cabinets', more: 'See all machines →' },
+    nextEvent: { title: 'Next event', more: 'Full events calendar →' },
     hours: { title: 'Opening hours' },
     about: {
       title: 'A proper old-school arcade',
@@ -28,7 +33,7 @@ ARC_I18N.addTranslations('home', {
     },
     status: { open: 'Open now - closes {close}', closed: 'Closed - opens {day} {open}',
               closedToday: 'Closed today', today: 'today' },
-    event: { from: 'from \u20ac{price}', book: 'Book this event' }
+    event: { from: 'from €{price}', book: 'Book this event' }
   }
   /* TODO: it / hu / pl / fr - translate after content is final (Week 4).
      Anything missing falls back to English, so nothing breaks. */
@@ -37,7 +42,7 @@ ARC_I18N.addTranslations('home', {
 ARC_I18N.addTranslations('about', {
   en: {
     meta: { title: 'About | Neon Arcade',
-            desc: 'The story, prices, house rules and FAQs of Neon Arcade, Dublin\'s retro arcade.' },
+            desc: "The story, prices, house rules and FAQs of Neon Arcade, Dublin's retro arcade." },
     title: 'About the arcade',
     story: {
       h: 'Our story',

@@ -1,23 +1,26 @@
 /* =============================================================
-   js/data/games.js - cabinet catalogue
-   Owner: Member 2. These are STUB entries to prove the format;
-   grow this to 20+ real cabinets.
-   Contract used by home.js / games.js / booking prefill:
-     id:          unique slug (used in ?game=<id> links)
-     name:        display name (real cabinet names)
-     genre:       one of: fighting | shooter | racing | maze |
-                  platform | puzzle | sports | rhythm | pinball
-     players:     number (1, 2, 4...)
-     decade:      '1980s' | '1990s' | '2000s' | '2010s' | '2020s'
-     year:        release year (for 'newest' sort)
-     pricePerPlay: euros per play (number)
-     image:       path under images/games/
-     descKey:     optional i18n key for a description
+   js/data/games.js - the list of arcade machines
+   Owner: Member 2
+
+   This is the ONE place the games are stored. The Home page,
+   the Games page and the Booking form all read from GAMES.
+   To add a machine, copy a line and change the values.
+   (These 8 are starters - aim for 20+.)
+
+   Each game needs:
+     id           short unique name, no spaces (used in links:
+                  booking.html?game=pac-man)
+     name         the title shown on the card
+     genre        fighting, shooter, racing, maze, platform,
+                  puzzle, sports, rhythm or pinball
+     players      how many can play at once (a number)
+     decade       '1980s', '1990s', '2000s', '2010s' or '2020s'
+     year         release year (used for "newest" sorting)
+     pricePerPlay euros per play (a number, e.g. 1.50)
+     image        picture file in images/games/
    ============================================================= */
 
-window.ARC_DATA = window.ARC_DATA || {};
-
-window.ARC_DATA.games = [
+const GAMES = [
   { id: 'pac-man',        name: 'Pac-Man',              genre: 'maze',     players: 2, decade: '1980s', year: 1980, pricePerPlay: 1.00, image: 'images/games/pac-man.svg' },
   { id: 'galaga',         name: 'Galaga',               genre: 'shooter',  players: 2, decade: '1980s', year: 1981, pricePerPlay: 1.00, image: 'images/games/galaga.svg' },
   { id: 'street-fighter', name: 'Street Fighter II',    genre: 'fighting', players: 2, decade: '1990s', year: 1991, pricePerPlay: 1.00, image: 'images/games/street-fighter.svg' },

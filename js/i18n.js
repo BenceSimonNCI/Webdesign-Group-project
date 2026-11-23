@@ -1,201 +1,218 @@
 /* =============================================================
-   i18n.js - language switching engine
-   Owner: Member 1 (site shell). Adapted from Bence's CA1
-   (Emerald Escapes, js/i18n.js) and extended so each page owner
-   can ship their own translation file without merge conflicts.
+   i18n.js - language switching ("i18n" = internationalisation)
+   Owner: Member 1 (site shell). Adapted from Bence's CA1.
 
-   HOW IT WORKS
-   * Every language pack lives in js/lang/<page>.js and calls
-       ARC_I18N.addTranslations('<ns>', { en: {...}, it: {...}, ... })
-     where <ns> is the page namespace (common, home, games,
-     events, booking, about). Owner of the page = owner of its
-     lang file, so nobody edits the same file.
-   * In HTML, mark text with data-i18n="ns.key". Dotted path,
-     first part is the namespace:
-       data-i18n="key"             -> element textContent
-       data-i18n-html="key"        -> element innerHTML
-       data-i18n-placeholder/-aria-label/-alt/-content -> attrs
-   * In JS, call ARC_I18N.t('ns.key', { name: value }) and
-     re-render inside ARC_I18N.onChange(function () {...}).
-   * Missing key -> falls back to English -> falls back to the
-     key text, so a missing phrase can never blank the page.
+   >>> YOU DON'T NEED TO READ THIS FILE TO USE IT. <<<
+   As a page owner you only need three things:
 
-   References: see CA1 i18n.js (same approach, same sources).
+   1) In HTML, give translatable text a key:
+        <h1 data-i18n="games.title">The cabinets</h1>
+      Keep the English text inside too (it shows before JS runs).
+      Other attributes: data-i18n-placeholder, data-i18n-alt,
+      data-i18n-aria-label, data-i18n-content (meta tags).
+
+   2) Put the text for that key in YOUR file js/lang/<page>.js:
+        en: { title: 'The cabinets' },
+        it: { title: 'I cabinati' }
+      (games.title -> file games.js, key "title")
+
+   3) In JS, for text you build yourself:
+        ARC_I18N.t('games.noResults')
+        ARC_I18N.t('games.count', { count: 5 })  -> fills {count}
+      and redraw it when the language changes:
+        ARC_I18N.onChange(myRenderFunction);
+
+   A missing translation falls back to English, so nothing ever
+   goes blank.
    ============================================================= */
 
-window.ARC_I18N = (function () {
-  'use strict';
+const ARC_I18N = (function () {
 
-  var STORAGE_KEY = 'arc-lang';
-  var FALLBACK = 'en';
+  /* ---------------- Settings ---------------- */
 
-  // Order here = order shown in the selector.
-  // Decided by the team: en, it, hu, pl, fr.
-  var SUPPORTED = ['en', 'it', 'hu', 'pl', 'fr'];
+  // Languages in the order they appear in the dropdown.
+  const SUPPORTED_LANGUAGES = ['en', 'it', 'hu', 'pl', 'fr'];
+  const DEFAULT_LANGUAGE = 'en';
+  const STORAGE_KEY = 'arc-lang'; // name used in localStorage
 
-  var current = FALLBACK;
-  var listeners = [];
+  // All translations end up in here, grouped by page:
+  //   translations.games.en.title = 'The cabinets'
+  const translations = {};
 
-  // { 'common': { en: {...}, it: {...} }, 'games': {...}, ... }
-  window.ARC_TRANSLATIONS = window.ARC_TRANSLATIONS || {};
-  var dicts = window.ARC_TRANSLATIONS;
+  // Functions the pages asked us to run when the language changes.
+  const changeListeners = [];
 
-  /**
-   * Merge one page's translations. Called by every js/lang file.
-   *   addTranslations('games', { en: {...}, it: {...} })
-   */
-  function addTranslations(namespace, byLang) {
-    dicts[namespace] = dicts[namespace] || {};
-    Object.keys(byLang).forEach(function (lang) {
-      dicts[namespace][lang] = byLang[lang];
-    });
+  let currentLanguage = DEFAULT_LANGUAGE;
+
+
+  /* ---------------- Registering translations ----------------
+     Called once by every file in js/lang/.
+     page = 'games', textsByLanguage = { en: {...}, it: {...} }   */
+  function addTranslations(page, textsByLanguage) {
+    translations[page] = textsByLanguage;
   }
 
+
+  /* ---------------- Choosing the starting language ----------------
+     1st choice: ?lang=it in the address bar
+     2nd choice: what the visitor picked last time (localStorage)
+     3rd choice: the browser's own language
+     otherwise:  English                                          */
   function detectLanguage() {
-    // ?lang=it wins and is remembered (shareable links).
-    var requested = new URLSearchParams(window.location.search).get('lang');
-    if (SUPPORTED.indexOf(requested) !== -1) {
-      localStorage.setItem(STORAGE_KEY, requested);
-      return requested;
+    const fromAddressBar = new URLSearchParams(window.location.search).get('lang');
+    if (SUPPORTED_LANGUAGES.includes(fromAddressBar)) {
+      localStorage.setItem(STORAGE_KEY, fromAddressBar);
+      return fromAddressBar;
     }
-    var saved = localStorage.getItem(STORAGE_KEY);
-    if (SUPPORTED.indexOf(saved) !== -1) {
-      return saved;
+
+    const savedChoice = localStorage.getItem(STORAGE_KEY);
+    if (SUPPORTED_LANGUAGES.includes(savedChoice)) {
+      return savedChoice;
     }
-    var preferred = navigator.languages || [navigator.language || ''];
-    for (var i = 0; i < preferred.length; i++) {
-      var code = String(preferred[i]).toLowerCase().split('-')[0];
-      if (SUPPORTED.indexOf(code) !== -1) {
-        return code;
+
+    // e.g. "hu-HU" -> "hu"
+    const browserLanguage = (navigator.language || '').toLowerCase().split('-')[0];
+    if (SUPPORTED_LANGUAGES.includes(browserLanguage)) {
+      return browserLanguage;
+    }
+
+    return DEFAULT_LANGUAGE;
+  }
+
+
+  /* ---------------- Finding one phrase ----------------
+     'games.card.price' in Italian ->
+       translations['games']['it']['card']['price']                */
+  function findText(language, key) {
+    const parts = key.split('.');     // ['games', 'card', 'price']
+    const page = parts[0];            // 'games'
+
+    if (translations[page] === undefined || translations[page][language] === undefined) {
+      return undefined;
+    }
+
+    let value = translations[page][language];
+    for (let i = 1; i < parts.length; i++) {
+      if (value === undefined || value === null) {
+        return undefined;
       }
+      value = value[parts[i]];
     }
-    return FALLBACK;
+    return value;
   }
 
-  function lookup(source, key) {
-    return key.split('.').reduce(function (level, part) {
-      return level && typeof level === 'object' ? level[part] : undefined;
-    }, source);
-  }
 
-  function interpolate(text, values) {
-    var all = { year: new Date().getFullYear() };
-    Object.keys(values || {}).forEach(function (name) {
-      all[name] = values[name];
-    });
-    return text.replace(/\{(\w+)\}/g, function (whole, name) {
-      return all[name] !== undefined ? all[name] : whole;
-    });
-  }
-
-  function lookupKey(lang, key) {
-    var parts = key.split('.');
-    var ns = dicts[parts[0]] ? parts[0] : 'common';
-    var path = dicts[parts[0]] ? parts.slice(1).join('.') : key;
-    var pack = (dicts[ns] || {})[lang];
-    return pack ? lookup(pack, path) : undefined;
-  }
-
-  /**
-   * Translate 'ns.key' in the current language.
-   * Falls back to English, then to the key itself.
-   */
+  /* ---------------- t() = "translate" ----------------
+     values fills in {placeholders}: t('games.count', { count: 5 })
+     {year} always works (used in the footer copyright).          */
   function t(key, values) {
-    var text = lookupKey(current, key);
+    let text = findText(currentLanguage, key);
+
     if (typeof text !== 'string') {
-      text = lookupKey(FALLBACK, key);
+      text = findText(DEFAULT_LANGUAGE, key); // fall back to English
     }
     if (typeof text !== 'string') {
-      return key;
+      return key; // still nothing: show the key so we spot it
     }
-    return interpolate(text, values);
+
+    const fillIns = Object.assign({ year: new Date().getFullYear() }, values);
+    for (const name in fillIns) {
+      text = text.split('{' + name + '}').join(fillIns[name]);
+    }
+    return text;
   }
 
-  var ATTRIBUTE_TARGETS = {
+
+  /* ---------------- Translating the whole page ----------------
+     Finds every element with a data-i18n... attribute and swaps
+     its text (or attribute) for the current language.           */
+  const ATTRIBUTE_MAP = {
     'data-i18n-placeholder': 'placeholder',
     'data-i18n-aria-label': 'aria-label',
     'data-i18n-alt': 'alt',
-    'data-i18n-content': 'content',
-    'data-i18n-title-attr': 'title'
+    'data-i18n-content': 'content'
   };
 
-  function apply(root) {
-    var scope = root || document;
+  function translatePage() {
+    for (const element of document.querySelectorAll('[data-i18n]')) {
+      element.textContent = t(element.getAttribute('data-i18n'));
+    }
 
-    scope.querySelectorAll('[data-i18n]').forEach(function (el) {
-      el.textContent = t(el.getAttribute('data-i18n'));
-    });
-    scope.querySelectorAll('[data-i18n-html]').forEach(function (el) {
-      el.innerHTML = t(el.getAttribute('data-i18n-html'));
-    });
-    Object.keys(ATTRIBUTE_TARGETS).forEach(function (attr) {
-      scope.querySelectorAll('[' + attr + ']').forEach(function (el) {
-        el.setAttribute(ATTRIBUTE_TARGETS[attr], t(el.getAttribute(attr)));
-      });
-    });
+    for (const dataAttribute in ATTRIBUTE_MAP) {
+      const realAttribute = ATTRIBUTE_MAP[dataAttribute];
+      for (const element of document.querySelectorAll('[' + dataAttribute + ']')) {
+        element.setAttribute(realAttribute, t(element.getAttribute(dataAttribute)));
+      }
+    }
   }
 
-  function updateDocumentLanguage() {
-    document.documentElement.setAttribute('lang', current);
-  }
 
-  function setLanguage(language, options) {
-    if (SUPPORTED.indexOf(language) === -1) {
+  /* ---------------- Switching language ---------------- */
+  function setLanguage(language) {
+    if (!SUPPORTED_LANGUAGES.includes(language)) {
       return;
     }
-    current = language;
-    if (!options || options.remember !== false) {
-      localStorage.setItem(STORAGE_KEY, language);
+    currentLanguage = language;
+    localStorage.setItem(STORAGE_KEY, language);
+
+    // <html lang="it"> - screen readers use this to pick a voice.
+    document.documentElement.lang = language;
+
+    translatePage();
+    document.getElementById('langSelect').value = language;
+
+    // Let each page redraw the content it built with JavaScript.
+    for (const listener of changeListeners) {
+      listener();
     }
-    updateDocumentLanguage();
-    apply();
-    syncSelector();
-    listeners.forEach(function (cb) { cb(current); });
   }
 
-  /** Re-render hook: pages register a callback to redraw
-      JS-built content when the language changes. */
   function onChange(callback) {
-    listeners.push(callback);
+    changeListeners.push(callback);
   }
 
-  function syncSelector() {
-    var sel = document.getElementById('langSelect');
-    if (sel) { sel.value = current; }
-  }
 
-  function buildSelector() {
-    var sel = document.getElementById('langSelect');
-    if (!sel) { return; }
-    // Each language named in its own language.
-    sel.innerHTML = SUPPORTED.map(function (code) {
-      var name = (dicts.common && dicts.common[code]
-                  && dicts.common[code].meta
-                  && dicts.common[code].meta.langName) || code;
-      return '<option value="' + code + '">' + name + '</option>';
-    }).join('');
-    sel.value = current;
-    sel.addEventListener('change', function () {
-      setLanguage(sel.value);
+  /* ---------------- The dropdown in the navbar ---------------- */
+  function buildLanguageDropdown() {
+    const dropdown = document.getElementById('langSelect');
+    if (dropdown === null) {
+      return;
+    }
+
+    let options = '';
+    for (const code of SUPPORTED_LANGUAGES) {
+      // Each language is shown in its own language ("Magyar", not "Hungarian").
+      const name = findText(code, 'common.meta.langName') || code;
+      options += `<option value="${code}">${name}</option>`;
+    }
+    dropdown.innerHTML = options;
+    dropdown.value = currentLanguage;
+
+    dropdown.addEventListener('change', function () {
+      setLanguage(dropdown.value);
     });
   }
 
-  current = detectLanguage();
-  updateDocumentLanguage();
+
+  /* ---------------- Start-up ---------------- */
+  currentLanguage = detectLanguage();
+  document.documentElement.lang = currentLanguage;
 
   document.addEventListener('DOMContentLoaded', function () {
-    buildSelector();
-    apply();
+    buildLanguageDropdown();
+    translatePage();
   });
 
+
+  /* ---------------- What other files can use ---------------- */
   return {
     t: t,
-    apply: apply,
     onChange: onChange,
     setLanguage: setLanguage,
     addTranslations: addTranslations,
-    supported: SUPPORTED.slice(),
-    get language() { return current; },
-    get locale() { return t('common.meta.locale'); }
+    // ARC_I18N.locale -> e.g. 'it-IT', for formatting dates
+    get locale() {
+      return t('common.meta.locale');
+    }
   };
 })();

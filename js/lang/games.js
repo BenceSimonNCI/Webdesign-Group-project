@@ -1,12 +1,17 @@
 /* =============================================================
-   js/lang/games.js - translations for namespace(s): games
-   One file per page owner = no merge conflicts.
-   Write English first; other languages can be filled in later -
-   anything missing falls back to English automatically.
-   meta.langName must exist for EVERY language in common.
+   js/lang/games.js - the text for the Games page, in every language
+   Owner: Member 2
+
+   HOW TO USE
+   * Each key here matches a data-i18n="..." in the HTML.
+     Example: data-i18n="games.title" -> the "title" line below.
+   * Write the English (en) version first. Other languages can be
+     added later - anything missing simply shows in English.
+   * Only edit YOUR file, so we never clash in git.
+   * Text containing an apostrophe: use "double quotes" around it,
+     e.g. title: "Dublin's arcade"
    ============================================================= */
 
-/* Owner: Member 2 (Games page) */
 ARC_I18N.addTranslations('games', {
   en: {
     meta: { title: 'Games | Neon Arcade',
@@ -14,11 +19,11 @@ ARC_I18N.addTranslations('games', {
     title: 'The cabinets',
     lead: 'Everything on the floor right now. Filter, sort, favourite - then book a session.',
     filters: { search: 'Search', searchPh: 'Search cabinets...', genre: 'Genre', players: 'Players',
-               decade: 'Decade', sort: 'Sort', all: 'All', favs: '\u2665 Favourites only', reset: 'Reset' },
+               decade: 'Decade', sort: 'Sort', all: 'All', favs: '♥ Favourites only', reset: 'Reset' },
     sort: { name: 'Name A-Z', newest: 'Newest', cheapest: 'Cheapest' },
     count: '{count} cabinets',
     noResults: 'No cabinets match those filters.',
-    card: { players: '{players}P', details: 'Details', book: 'Book a session', price: '\u20ac{price}/play' },
+    card: { players: '{players}P', details: 'Details', book: 'Book a session', price: '€{price}/play' },
     modal: { close: 'Close' }
     /* data.<gameId> descriptions go here when translated */
   }

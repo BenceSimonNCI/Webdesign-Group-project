@@ -1,12 +1,17 @@
 /* =============================================================
-   js/lang/events.js - translations for namespace(s): events
-   One file per page owner = no merge conflicts.
-   Write English first; other languages can be filled in later -
-   anything missing falls back to English automatically.
-   meta.langName must exist for EVERY language in common.
+   js/lang/events.js - the text for the Events page, in every language
+   Owner: Member 3
+
+   HOW TO USE
+   * Each key here matches a data-i18n="..." in the HTML.
+     Example: data-i18n="events.title" -> the "title" line below.
+   * Write the English (en) version first. Other languages can be
+     added later - anything missing simply shows in English.
+   * Only edit YOUR file, so we never clash in git.
+   * Text containing an apostrophe: use "double quotes" around it,
+     e.g. title: "Dublin's arcade"
    ============================================================= */
 
-/* Owner: Member 3 (Events page) */
 ARC_I18N.addTranslations('events', {
   en: {
     meta: { title: 'Events | Neon Arcade',
@@ -17,6 +22,6 @@ ARC_I18N.addTranslations('events', {
     countdownToday: 'Next event: {title} - today!',
     cats: { all: 'All', tournament: 'Tournament', retro: 'Retro night', family: 'Family', private: 'Private' },
     cal: { prev: 'Previous month', next: 'Next month' },
-    day: { none: 'No events this day.', book: 'Book this event', from: 'from \u20ac{price}', spots: '{n} spots left' }
+    day: { none: 'No events this day.', book: 'Book this event', from: 'from €{price}', spots: '{n} spots left' }
   }
 });
