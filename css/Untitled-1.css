@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" data-i18n-content="booking.meta.desc" content="Book a casual session, party, tournament entry or private hire at Neon Arcade.">
+  <title data-i18n="booking.meta.title">Book a session | Neon Arcade</title>
+
+  <!-- Fonts (Google Fonts; the site still works offline, it just falls
+       back to the system fonts listed in css/base.css) -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5 (stored locally so the site works offline / from the zip) -->
+  <link href="vendor/bootstrap.min.css" rel="stylesheet">
+  <!-- Shared styles, loaded after Bootstrap so it can override it -->
+  <link href="css/base.css" rel="stylesheet">
+  <link href="css/booking.css" rel="stylesheet">
+</head>
+<body class="arc-crt">
+
+  <a class="arc-skip-link" href="#main" data-i18n="common.skip">Skip to main content</a>
+
+  <!-- ============================================================
+       HEADER / NAVIGATION
+       IDENTICAL on every page except the arc-active / aria-current
+       marker on the current page's link. Any change here must be
+       made on ALL pages - talk to the shell owner (Member 1).
+       Text marked data-i18n is swapped by js/i18n.js.
+       ============================================================ -->
+  <header>
+    <nav class="navbar navbar-expand-lg sticky-top arc-navbar">
+      <div class="container">
+        <a class="navbar-brand arc-brand" href="index.html">
+          <span class="arc-brand-mark" aria-hidden="true">NA</span>
+          <span data-i18n="common.meta.siteName">Neon Arcade</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false"
+                aria-label="Toggle navigation" data-i18n-aria-label="common.nav.toggle">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNav">
+          <ul class="navbar-nav ms-auto arc-nav-list">
+            <li class="nav-item"><a class="nav-link arc-nav-link" data-page="index"   href="index.html"   data-i18n="common.nav.home">Home</a></li>
+            <li class="nav-item"><a class="nav-link arc-nav-link" data-page="games"   href="games.html"   data-i18n="common.nav.games">Games</a></li>
+            <li class="nav-item"><a class="nav-link arc-nav-link" data-page="events"  href="events.html"  data-i18n="common.nav.events">Events</a></li>
+            <li class="nav-item"><a class="nav-link arc-nav-link" data-page="booking" href="booking.html" data-i18n="common.nav.booking">Booking</a></li>
+            <li class="nav-item"><a class="nav-link arc-nav-link" data-page="about"   href="about.html"   data-i18n="common.nav.about">About</a></li>
+
+            <!-- Language selector, filled by js/i18n.js -->
+            <li class="nav-item arc-lang-item">
+              <label class="arc-sr-only" for="langSelect" data-i18n="common.nav.langLabel">Language</label>
+              <select id="langSelect" class="form-select form-select-sm arc-lang-select" aria-label="Language"></select>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" class="container arc-page">
+
+    <h1 class="arc-page-title" data-i18n="booking.title">Book a session</h1>
+    <p class="arc-lead" data-i18n="booking.lead">Reserve a party slot, tournament entry or private hire. Walk-ins never need to book.</p>
+
+    <div class="row g-4">
+      <div class="col-lg-8">
+
+        <!-- ============================================================
+             BOOKING FORM - owned by Member 4 (js/booking.js)
+             novalidate: browser bubbles off, our JS shows inline errors.
+             ============================================================ -->
+        <form id="bookingForm" novalidate class="arc-form">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label" for="bName" data-i18n="booking.f.name">Name <span class="arc-req">*</span></label>
+              <input class="form-control" id="bName" name="name" type="text" required minlength="2" data-field="bName">
+              <p class="arc-error-text" id="bNameError" aria-live="polite"></p>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="bEmail" data-i18n="booking.f.email">Email <span class="arc-req">*</span></label>
+              <input class="form-control" id="bEmail" name="email" type="email" required data-field="bEmail">
+              <p class="arc-error-text" id="bEmailError" aria-live="polite"></p>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="bPhone" data-i18n="booking.f.phone">Phone</label>
+              <input class="form-control" id="bPhone" name="phone" type="tel" data-field="bPhone">
+              <p class="arc-error-text" id="bPhoneError" aria-live="polite"></p>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="bPackage" data-i18n="booking.f.package">Package <span class="arc-req">*</span></label>
+              <select class="form-select" id="bPackage" name="package" required data-field="bPackage">
+                <option value="" data-i18n="booking.f.packagePh">Choose...</option>
+                <option value="casual"      data-i18n="booking.pkg.casual">Casual play (&euro;1/play)</option>
+                <option value="wristband"   data-i18n="booking.pkg.wrist">All-night wristband (&euro;15/person)</option>
+                <option value="party"       data-i18n="booking.pkg.party">Party zone (&euro;120/10 guests)</option>
+                <option value="tournament"  data-i18n="booking.pkg.tourn">Tournament entry (&euro;10/person)</option>
+                <option value="private"     data-i18n="booking.pkg.priv">Private hire (&euro;300)</option>
+              </select>
+              <p class="arc-error-text" id="bPackageError" aria-live="polite"></p>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="bDate" data-i18n="booking.f.date">Date <span class="arc-req">*</span></label>
+              <input class="form-control" id="bDate" name="date" type="date" required data-field="bDate">
+              <p class="arc-error-text" id="bDateError" aria-live="polite"></p>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="bTime" data-i18n="booking.f.time">Time slot <span class="arc-req">*</span></label>
+              <select class="form-select" id="bTime" name="time" required data-field="bTime">
+                <option value="" data-i18n="booking.f.timePh">Choose...</option>
+                <option value="17:00">17:00 - 19:00</option>
+                <option value="19:00">19:00 - 21:00</option>
+                <option value="21:00">21:00 - 23:00</option>
+              </select>
+              <p class="arc-error-text" id="bTimeError" aria-live="polite"></p>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="bGuests" data-i18n="booking.f.guests">Guests <span class="arc-req">*</span></label>
+              <input class="form-control" id="bGuests" name="guests" type="number" min="1" max="40" required data-field="bGuests">
+              <p class="arc-error-text" id="bGuestsError" aria-live="polite"></p>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="bGame" data-i18n="booking.f.game">Favourite cabinet (optional)</label>
+              <input class="form-control" id="bGame" name="game" type="text" data-field="bGame">
+              <p class="arc-error-text" id="bGameError" aria-live="polite"></p>
+            </div>
+            <div class="col-12">
+              <label class="form-label" for="bMessage" data-i18n="booking.f.msg">Anything else?</label>
+              <textarea class="form-control" id="bMessage" name="message" rows="4" maxlength="500" data-field="bMessage"></textarea>
+              <p class="arc-error-text" id="bMessageError" aria-live="polite"></p>
+            </div>
+            <div class="col-12">
+              <div class="form-check">
+                <input class="form-check-input" id="bTerms" type="checkbox" required data-field="bTerms">
+                <label class="form-check-label" for="bTerms" data-i18n="booking.f.terms">I accept the house rules <span class="arc-req">*</span></label>
+              </div>
+              <p class="arc-error-text" id="bTermsError" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <div id="bookingFeedback" class="alert d-none mt-3" role="alert"></div>
+
+          <div class="mt-3">
+            <button type="submit" class="arc-btn arc-btn-neon" data-i18n="booking.f.submit">Send booking</button>
+            <button type="reset"  class="arc-btn arc-btn-ghost" id="clearForm" data-i18n="booking.f.clear">Clear</button>
+          </div>
+        </form>
+
+      </div>
+
+      <!-- Live price estimate, updated by js/booking.js -->
+      <div class="col-lg-4">
+        <aside class="arc-card arc-card-pad arc-summary">
+          <h2 class="arc-card-title" data-i18n="booking.sum.h">Estimated price</h2>
+          <p class="arc-price" id="calcTotal">&euro;0</p>
+          <p class="arc-muted" id="calcNote" data-i18n="booking.sum.note">Pick a package to see the estimate.</p>
+        </aside>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="arc-footer">
+    <div class="container">
+      <div class="row gy-4">
+        <div class="col-md-4">
+          <p class="arc-footer-brand">
+            <span class="arc-brand-mark" aria-hidden="true">NA</span>
+            <span data-i18n="common.meta.siteName">Neon Arcade</span>
+          </p>
+          <p class="arc-footer-tag" data-i18n="common.footer.tagline">Insert coin. Stay awhile.</p>
+        </div>
+        <div class="col-md-4">
+          <h2 class="arc-footer-h" data-i18n="common.footer.hoursTitle">Opening hours</h2>
+          <ul class="arc-hours-list" id="footerHours"><!-- filled by js/main.js --></ul>
+        </div>
+        <div class="col-md-4">
+          <h2 class="arc-footer-h" data-i18n="common.footer.contactTitle">Find us</h2>
+          <address class="arc-footer-addr" data-i18n="common.footer.address">12 Arcade Lane, Dublin 1</address>
+        </div>
+      </div>
+      <p class="arc-copy" data-i18n="common.footer.copyright">&copy; {year} Neon Arcade - student project, not a real arcade.</p>
+    </div>
+  </footer>
+
+  <script src="vendor/bootstrap.bundle.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/lang/common.js"></script>
+  <script src="js/lang/booking.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/booking.js"></script>
+</body>
+</html>
